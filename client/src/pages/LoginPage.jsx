@@ -1,30 +1,31 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { ScanLine } from 'lucide-react'
-import api from '../utils/api'
-import useAuthStore from '../store/authStore'
-import toast from 'react-hot-toast'
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ScanLine, Eye, EyeOff } from "lucide-react";
+import api from "../utils/api";
+import useAuthStore from "../store/authStore";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
-  const [form, setForm] = useState({ email: '', password: '' })
-  const [loading, setLoading] = useState(false)
-  const { setAuth } = useAuthStore()
-  const navigate = useNavigate()
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { setAuth } = useAuthStore();
+  const navigate = useNavigate();
 
-  const handleSubmit = async e => {
-    e.preventDefault()
-    setLoading(true)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      const { data } = await api.post('/auth/login', form)
-      setAuth(data.user, data.accessToken, data.refreshToken)
-      toast.success(`Welcome back, ${data.user.name}!`)
-      navigate('/')
+      const { data } = await api.post("/auth/login", form);
+      setAuth(data.user, data.accessToken, data.refreshToken);
+      toast.success(`Welcome back, ${data.user.name}!`);
+      navigate("/");
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Login failed')
+      toast.error(err.response?.data?.error || "Login failed");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -38,21 +39,51 @@ export default function LoginPage() {
 
         <div className="card p-6">
           <h1 className="text-lg font-semibold text-gray-900 mb-1">Sign in</h1>
-          <p className="text-sm text-gray-500 mb-6">Welcome back to your QR dashboard</p>
+          <p className="text-sm text-gray-500 mb-6">
+            Welcome back to your QR dashboard
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label">Email</label>
-              <input type="email" className="input" placeholder="you@example.com"
-                value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required />
+              <input
+                type="email"
+                className="input"
+                placeholder="you@example.com"
+                value={form.email}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, email: e.target.value }))
+                }
+                required
+              />
             </div>
-            <div>
+            <div className="space-y-2">
               <label className="label">Password</label>
-              <input type="password" className="input" placeholder="••••••••"
-                value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} required />
+
+              <div className="relative">
+                <input
+                  type={show ? "text" : "password"}
+                  className="input pr-10"
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, password: e.target.value }))
+                  }
+                  required
+                />
+                <button type="button" onClick={() => setShow(!show)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {show ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
-            <button type="submit" className="btn-primary w-full justify-center" disabled={loading}>
-              {loading ? 'Signing in…' : 'Sign in'}
+            <button
+              type="submit"
+              className="btn-primary w-full justify-center"
+              disabled={loading}
+            >
+              {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
         </div>
@@ -63,5 +94,5 @@ export default function LoginPage() {
         </p> */}
       </div>
     </div>
-  )
+  );
 }
