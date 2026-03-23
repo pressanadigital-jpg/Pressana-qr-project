@@ -36,6 +36,9 @@
     composes: btn;
     background-color: var(--color-sky-600);
     color: #fff;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
   }
   .btn-primary:hover:not(:disabled) { background-color: var(--color-sky-700); }
   .btn-primary:active:not(:disabled) { scale: 0.97; }
