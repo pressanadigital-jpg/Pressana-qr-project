@@ -15,7 +15,7 @@ const app = express();
 
 app.use(helmet({ contentSecurityPolicy: false }));
 const allowedOrigins = [
-  "http://qrscan.pressanainfra.com/",
+  "https://qrscan.pressanainfra.com/",
 ];
 
 app.use(cors({
