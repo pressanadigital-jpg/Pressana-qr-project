@@ -15,9 +15,7 @@ const app = express();
 
 app.use(helmet({ contentSecurityPolicy: false }));
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://pressana-qr.netlify.app",
-  "https://pressana-qr-code.netlify.app"
+  "http://qrscan.pressanainfra.com/",
 ];
 
 app.use(cors({
